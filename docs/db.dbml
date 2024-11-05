@@ -1,0 +1,124 @@
+// Copy this text, paste to https://dbdiagram.io/d
+// Or, https://databasediagram.com/app
+// Or, view in VSCode with extension: "DBML Live Preview"
+
+Project DBML {
+  Note: '''
+Allergy: Stores known allergies of animals
+Animal: Stores information about animals treated at the clinic
+Owner: Stores information about pet owners
+Appointment: Records appointments with the vet
+Vet: Contains information about veterinarians in the clinic
+Medicine: Lists medicines prescribed to animals
+MedicineSupply: Links medicines with suppliers and records quantity supplied
+Supplier: Information about suppliers providing medicines
+Payment: Records payments made for treatments
+Prescription: Links prescribed medicines to treatments
+Treatment: Records treatment procedures administered during appointments
+Schedule: Schedules for vet availability
+'''
+}
+
+Table Allergy {
+    id INTEGER [primary key]
+    animal_id INTEGER 
+    allergy_name VARCHAR 
+    severity VARCHAR 
+    }
+
+Table Animal {
+    id INTEGER [primary key]
+    name VARCHAR 
+    species VARCHAR 
+    breed VARCHAR 
+    age INTEGER 
+    owner_id INTEGER 
+    }
+
+Table Owner {
+    id INTEGER [primary key]
+    name VARCHAR 
+    phone_number VARCHAR 
+    email VARCHAR 
+    address VARCHAR 
+    }
+
+Table Appointment {
+    id INTEGER [primary key]
+    animal_id INTEGER 
+    date_time DATETIME 
+    reason VARCHAR 
+    vet_id INTEGER 
+    }
+
+Table Vet {
+    id INTEGER [primary key]
+    name VARCHAR 
+    specialization VARCHAR 
+    }
+
+Table Medicine {
+    id INTEGER [primary key]
+    name VARCHAR 
+    description VARCHAR 
+    price FLOAT 
+    }
+
+Table MedicineSupply {
+    id INTEGER [primary key]
+    medicine_id INTEGER 
+    supplier_id INTEGER 
+    quantity INTEGER 
+    supply_date DATETIME 
+    }
+
+Table Supplier {
+    id INTEGER [primary key]
+    name VARCHAR 
+    contact_phone VARCHAR 
+    email VARCHAR 
+    }
+
+Table Payment {
+    id INTEGER [primary key]
+    appointment_id INTEGER 
+    amount FLOAT 
+    payment_date DATETIME 
+    }
+
+Table Prescription {
+    id INTEGER [primary key]
+    treatment_id INTEGER 
+    medicine_id INTEGER 
+    dosage VARCHAR 
+    }
+
+Table Treatment {
+    id INTEGER [primary key]
+    appointment_id INTEGER 
+    description VARCHAR 
+    cost FLOAT 
+    }
+
+Table Schedule {
+    id INTEGER [primary key]
+    vet_id INTEGER 
+    day_of_week VARCHAR 
+    start_time DATETIME 
+    end_time DATETIME 
+    }
+
+
+
+// Relationships
+    Ref: Allergy.(animal_id) < Animal.(id)
+    Ref: Animal.(owner_id) < Owner.(id)
+    Ref: Appointment.(animal_id) < Animal.(id)
+    Ref: Appointment.(vet_id) < Vet.(id)
+    Ref: MedicineSupply.(medicine_id) < Medicine.(id)
+    Ref: MedicineSupply.(supplier_id) < Supplier.(id)
+    Ref: Payment.(appointment_id) < Appointment.(id)
+    Ref: Prescription.(medicine_id) < Medicine.(id)
+    Ref: Prescription.(treatment_id) < Treatment.(id)
+    Ref: Treatment.(appointment_id) < Appointment.(id)
+    Ref: Schedule.(vet_id) < Vet.(id)

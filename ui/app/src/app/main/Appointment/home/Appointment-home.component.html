@@ -1,0 +1,53 @@
+<o-form-layout-manager attr="Appointment" mode="tab" title="APPOINTMENT">
+    <div fxFill fxLayout="column" fxLayoutAlign="start">
+        <o-table 
+            attr="AppointmentTable" 
+            service="Appointment" 
+            entity="Appointment" 
+            title="APPOINTMENT"
+            keys="id"
+            columns="id;animal_id;vet_id;date_time;reason" 
+            header-actions="R;D"
+            visible-columns="id;animal_id;vet_id;date_time;reason"  
+            sort-columns="id" 
+            query-rows="20" 
+            quick-filter="yes"
+            row-height="medium" 
+            select-all-checkbox="true" 
+            pageable="yes"  
+            auto-adjust="true" 
+            virtual-scroll="yes" 
+            edition-mode="dblclick"
+            horizontal-scroll="yes"
+            show-title="yes"
+            export-button="yes">
+            
+            <o-table-column #id attr="id" title=" id*" type="integer" editable="no" required="no" content-align="center"></o-table-column>
+            
+            <o-table-column attr="animal_id" title="animal_id">
+    <o-table-cell-renderer-service attr="animal_id" 
+        service="Animal" entity="AnimalType" columns="id;name"
+        parent-keys="id:animal_id"
+        value-column="name" keys="animal_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column attr="vet_id" title="vet_id">
+    <o-table-cell-renderer-service attr="vet_id" 
+        service="Vet" entity="VetType" columns="id;name"
+        parent-keys="id:vet_id"
+        value-column="name" keys="vet_id"
+        visible-columns="name" separator=" - " width="680px">
+    </o-table-cell-renderer-service>
+</o-table-column>
+            
+            <o-table-column #date_time attr="date_time" title="date_time" editable="no" required="yes" content-align="left"></o-table-column>
+            
+            <o-table-column #reason attr="reason" title="reason" editable="no" required="no" content-align="left"></o-table-column>
+            
+            <o-table-context-menu></o-table-context-menu>
+            <o-table-paginator page-size-options="24;48;96"></o-table-paginator>
+        </o-table>
+    </div>
+</o-form-layout-manager>

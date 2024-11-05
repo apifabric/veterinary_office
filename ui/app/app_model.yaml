@@ -1,0 +1,543 @@
+about:
+  date: November 05, 2024 16:32:20
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+entities:
+  Allergy:
+    columns:
+    - label: ' allergy_name*'
+      name: allergy_name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: animal_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: severity
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores known allergies of animals
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: allergy_name
+    home_template: home_template.html
+    info_list: Stores known allergies of animals
+    label: Allergy
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - animal_id
+      name: animal
+      resource: Animal
+    type: Allergy
+  Animal:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: owner_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: species
+      required: true
+      template: text
+      type: VARCHAR
+    - name: age
+      template: integer
+      type: INTEGER
+    - name: id
+      template: integer
+      type: INTEGER
+    - name: breed
+      template: text
+      type: VARCHAR
+    description: Stores information about animals treated at the clinic
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Stores information about animals treated at the clinic
+    label: Animal
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - animal_id
+      name: AllergyList
+      resource: Allergy
+    - direction: tomany
+      fks:
+      - animal_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Animal
+  Appointment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: animal_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: vet_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: date_time
+      required: true
+      type: DATETIME
+    - name: reason
+      template: text
+      type: VARCHAR
+    description: Records appointments with the vet
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Records appointments with the vet
+    label: Appointment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: TreatmentList
+      resource: Treatment
+    - direction: toone
+      fks:
+      - animal_id
+      name: animal
+      resource: Animal
+    - direction: toone
+      fks:
+      - vet_id
+      name: vet
+      resource: Vet
+    type: Appointment
+  Medicine:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: description
+      template: text
+      type: VARCHAR
+    - name: price
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Lists medicines prescribed to animals
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Lists medicines prescribed to animals
+    label: Medicine
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - medicine_id
+      name: MedicineSupplyList
+      resource: MedicineSupply
+    - direction: tomany
+      fks:
+      - medicine_id
+      name: PrescriptionList
+      resource: Prescription
+    type: Medicine
+  MedicineSupply:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: medicine_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: supplier_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: quantity
+      required: true
+      template: integer
+      type: INTEGER
+    - name: supply_date
+      required: true
+      type: DATETIME
+    description: Links medicines with suppliers and records quantity supplied
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Links medicines with suppliers and records quantity supplied
+    label: MedicineSupply
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - medicine_id
+      name: medicine
+      resource: Medicine
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: MedicineSupply
+  Owner:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: phone_number
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: address
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Stores information about pet owners
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Stores information about pet owners
+    label: Owner
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - owner_id
+      name: AnimalList
+      resource: Animal
+    type: Owner
+  Payment:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: appointment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: amount
+      required: true
+      template: real
+      type: FLOAT
+    - name: payment_date
+      required: true
+      type: DATETIME
+    description: Records payments made for treatments
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Records payments made for treatments
+    label: Payment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Payment
+  Prescription:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: medicine_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: treatment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: dosage
+      template: text
+      type: VARCHAR
+    description: Links prescribed medicines to treatments
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Links prescribed medicines to treatments
+    label: Prescription
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - medicine_id
+      name: medicine
+      resource: Medicine
+    - direction: toone
+      fks:
+      - treatment_id
+      name: treatment
+      resource: Treatment
+    type: Prescription
+  Schedule:
+    columns:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+      template: integer
+      type: INTEGER
+    - name: vet_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: day_of_week
+      required: true
+      template: text
+      type: VARCHAR
+    - name: start_time
+      required: true
+      type: DATETIME
+    - name: end_time
+      required: true
+      type: DATETIME
+    description: Schedules for vet availability
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: id
+    home_template: home_template.html
+    info_list: Schedules for vet availability
+    label: Schedule
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: toone
+      fks:
+      - vet_id
+      name: vet
+      resource: Vet
+    type: Schedule
+  Supplier:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: contact_phone
+      template: text
+      type: VARCHAR
+    - name: email
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Information about suppliers providing medicines
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Information about suppliers providing medicines
+    label: Supplier
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: MedicineSupplyList
+      resource: MedicineSupply
+    type: Supplier
+  Treatment:
+    columns:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: appointment_id
+      required: true
+      template: integer
+      type: INTEGER
+    - name: cost
+      template: real
+      type: FLOAT
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Records treatment procedures administered during appointments
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: description
+    home_template: home_template.html
+    info_list: Records treatment procedures administered during appointments
+    label: Treatment
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - treatment_id
+      name: PrescriptionList
+      resource: Prescription
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Treatment
+  Vet:
+    columns:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+      template: text
+      type: VARCHAR
+    - name: specialization
+      template: text
+      type: VARCHAR
+    - name: id
+      template: integer
+      type: INTEGER
+    description: Contains information about veterinarians in the clinic
+    detail_template: detail_template.html
+    exclude: 'false'
+    favorite: name
+    home_template: home_template.html
+    info_list: Contains information about veterinarians in the clinic
+    label: Vet
+    mode: tab
+    new_template: new_template.html
+    primary_key:
+    - id
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vet_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: tomany
+      fks:
+      - vet_id
+      name: ScheduleList
+      resource: Schedule
+    type: Vet
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: false
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    mode: tab
+    pick_style: list
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: false

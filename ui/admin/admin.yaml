@@ -1,0 +1,357 @@
+about:
+  date: November 05, 2024 16:32:20
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 11
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Allergy:
+    attributes:
+    - label: ' allergy_name*'
+      name: allergy_name
+      required: true
+      search: true
+      sort: true
+    - name: animal_id
+      required: true
+    - name: severity
+    - name: id
+    description: Stores known allergies of animals
+    info_list: Stores known allergies of animals
+    tab_groups:
+    - direction: toone
+      fks:
+      - animal_id
+      name: animal
+      resource: Animal
+    type: Allergy
+    user_key: allergy_name
+  Animal:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: owner_id
+      required: true
+    - name: species
+      required: true
+    - name: age
+    - name: id
+    - name: breed
+    description: Stores information about animals treated at the clinic
+    info_list: Stores information about animals treated at the clinic
+    tab_groups:
+    - direction: tomany
+      fks:
+      - animal_id
+      name: AllergyList
+      resource: Allergy
+    - direction: tomany
+      fks:
+      - animal_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: toone
+      fks:
+      - owner_id
+      name: owner
+      resource: Owner
+    type: Animal
+    user_key: name
+  Appointment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: animal_id
+      required: true
+    - name: vet_id
+      required: true
+    - name: date_time
+      required: true
+      type: DATETIME
+    - name: reason
+    description: Records appointments with the vet
+    info_list: Records appointments with the vet
+    tab_groups:
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: PaymentList
+      resource: Payment
+    - direction: tomany
+      fks:
+      - appointment_id
+      name: TreatmentList
+      resource: Treatment
+    - direction: toone
+      fks:
+      - animal_id
+      name: animal
+      resource: Animal
+    - direction: toone
+      fks:
+      - vet_id
+      name: vet
+      resource: Vet
+    type: Appointment
+    user_key: id
+  Medicine:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: description
+    - name: price
+    - name: id
+    description: Lists medicines prescribed to animals
+    info_list: Lists medicines prescribed to animals
+    tab_groups:
+    - direction: tomany
+      fks:
+      - medicine_id
+      name: MedicineSupplyList
+      resource: MedicineSupply
+    - direction: tomany
+      fks:
+      - medicine_id
+      name: PrescriptionList
+      resource: Prescription
+    type: Medicine
+    user_key: name
+  MedicineSupply:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: medicine_id
+      required: true
+    - name: supplier_id
+      required: true
+    - name: quantity
+      required: true
+    - name: supply_date
+      required: true
+      type: DATETIME
+    description: Links medicines with suppliers and records quantity supplied
+    info_list: Links medicines with suppliers and records quantity supplied
+    tab_groups:
+    - direction: toone
+      fks:
+      - medicine_id
+      name: medicine
+      resource: Medicine
+    - direction: toone
+      fks:
+      - supplier_id
+      name: supplier
+      resource: Supplier
+    type: MedicineSupply
+    user_key: id
+  Owner:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: phone_number
+    - name: email
+    - name: address
+    - name: id
+    description: Stores information about pet owners
+    info_list: Stores information about pet owners
+    tab_groups:
+    - direction: tomany
+      fks:
+      - owner_id
+      name: AnimalList
+      resource: Animal
+    type: Owner
+    user_key: name
+  Payment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: appointment_id
+      required: true
+    - name: amount
+      required: true
+    - name: payment_date
+      required: true
+      type: DATETIME
+    description: Records payments made for treatments
+    info_list: Records payments made for treatments
+    tab_groups:
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Payment
+    user_key: id
+  Prescription:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: medicine_id
+      required: true
+    - name: treatment_id
+      required: true
+    - name: dosage
+    description: Links prescribed medicines to treatments
+    info_list: Links prescribed medicines to treatments
+    tab_groups:
+    - direction: toone
+      fks:
+      - medicine_id
+      name: medicine
+      resource: Medicine
+    - direction: toone
+      fks:
+      - treatment_id
+      name: treatment
+      resource: Treatment
+    type: Prescription
+    user_key: id
+  Schedule:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: vet_id
+      required: true
+    - name: day_of_week
+      required: true
+    - name: start_time
+      required: true
+      type: DATETIME
+    - name: end_time
+      required: true
+      type: DATETIME
+    description: Schedules for vet availability
+    info_list: Schedules for vet availability
+    tab_groups:
+    - direction: toone
+      fks:
+      - vet_id
+      name: vet
+      resource: Vet
+    type: Schedule
+    user_key: id
+  Supplier:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: contact_phone
+    - name: email
+    - name: id
+    description: Information about suppliers providing medicines
+    info_list: Information about suppliers providing medicines
+    tab_groups:
+    - direction: tomany
+      fks:
+      - supplier_id
+      name: MedicineSupplyList
+      resource: MedicineSupply
+    type: Supplier
+    user_key: name
+  Treatment:
+    attributes:
+    - label: ' description*'
+      name: description
+      required: true
+      search: true
+      sort: true
+    - name: appointment_id
+      required: true
+    - name: cost
+    - name: id
+    description: Records treatment procedures administered during appointments
+    info_list: Records treatment procedures administered during appointments
+    tab_groups:
+    - direction: tomany
+      fks:
+      - treatment_id
+      name: PrescriptionList
+      resource: Prescription
+    - direction: toone
+      fks:
+      - appointment_id
+      name: appointment
+      resource: Appointment
+    type: Treatment
+    user_key: description
+  Vet:
+    attributes:
+    - label: ' name*'
+      name: name
+      required: true
+      search: true
+      sort: true
+    - name: specialization
+    - name: id
+    description: Contains information about veterinarians in the clinic
+    info_list: Contains information about veterinarians in the clinic
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vet_id
+      name: AppointmentList
+      resource: Appointment
+    - direction: tomany
+      fks:
+      - vet_id
+      name: ScheduleList
+      resource: Schedule
+    type: Vet
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
